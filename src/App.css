@@ -1,5 +1,13 @@
 .App {
   text-align: center;
+  /*filter: invert(1);*/
+  background-color: #ffffff;
+}
+
+.App-body {
+  text-align: justify;
+  filter: inherit;
+  background-color: inherit;
 }
 
 .App-logo {

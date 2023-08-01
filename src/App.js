@@ -20,17 +20,42 @@ const settings = {
 const alchemy = new Alchemy(settings);
 
 function App() {
-  const [blockNumber, setBlockNumber] = useState();
-
-  useEffect(() => {
-    async function getBlockNumber() {
-      setBlockNumber(await alchemy.core.getBlockNumber());
-    }
-
-    getBlockNumber();
+  const [blockNumber, setBlockNumber] = useState("");
+  const [block, setBlock] = useState({
+    timestamp: "",
+    hash: "",
+    parentHash: "",
+    difficulty: "",
+    transactions: []
   });
 
-  return <div className="App">Block Number: {blockNumber}</div>;
+
+  useEffect(() => {
+    async function getBlockProperties() {
+      let blocknum = await alchemy.core.getBlockNumber();
+      setBlockNumber(blocknum);
+      setBlock(await alchemy.core.getBlockWithTransactions(blocknum));
+    }
+
+    getBlockProperties();
+
+  }, []);
+
+  return (
+    <div className="App">
+      <h1><b>Welcome to luksgrin's Block explorer!</b></h1>
+      <h2>Here you can see the latest block on the Ethereum Mainnet</h2>
+      Block Number: {blockNumber}
+      <br></br>
+      <div className="App-body">
+      Block Timestamp: {block.timestamp}<br></br>
+      Block Hash: {block.hash}<br></br>
+      Block parentHash: {block.parentHash}<br></br>
+      Block difficulty: {block.difficulty}<br></br>
+      Number of transactions within the block: {block.transactions.length}<br></br>
+      </div>
+    </div>
+  );
 }
 
 export default App;
